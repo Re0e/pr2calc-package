@@ -60,7 +60,7 @@ public class Matrix {
 		for(int i=0;i<this.numOfRow;i++){
 			System.out.print("[ ");
 			for(int j=0;j<this.numOfColumn;j++){
-				System.out.print(this.m[i][j] + " ");
+				System.out.printf("%.3f ", this.m[i][j]);
 			}
 			System.out.println("]");
 		}
@@ -139,7 +139,95 @@ public class Matrix {
 		
     }
 
+	public static double convertIntoRadian(double theta)
+	{
+		return (theta / 180.0) * Math.PI;
+	}
+
+	public Matrix rotate(double theta)
+	{
+		if(this.numOfColumn != 1 || this.numOfRow != 2)
+		{
+			System.out.println("回転行列は2行の列ベクトルである必要があります");
+			System.exit(0);
+		}
+		Matrix rotateMatrix = null;
+		double radian = convertIntoRadian(theta);
+		double[][] rm =
+		{
+			{Math.cos(radian), -Math.sin(radian)},
+			{Math.sin(radian), Math.cos(radian)}};
+		rotateMatrix = new Matrix(rm);
+		return rotateMatrix.multiplyMatrix(this);
+	}
+
+	public Matrix transpose()
+	{
+		Matrix transposed = null;
+		double[][] result = new double[this.numOfColumn][this.numOfRow];
+		for(int i=0;i<this.numOfColumn;i++)
+		{
+			for(int j=0;j<this.numOfRow;j++)
+				result[i][j] = this.m[j][i];
+		}
+		transposed = new Matrix(result);
+		return transposed;
+	}
+
 	public static void main(String[] args) {
+/*
+ * main メソッド中で今回作成した内積計算メソッドや行列同士、ベクトルと行列、
+ * 行列とベクトルの積を計算するメソッドが正常に動いているかを確認せよ。
+ */
+
+// 行列・ベクトル定義、および演算処理の一例 （あくまで一例です）　課題の要求を満たすよう、各自で加筆・修正してください
+
+		Matrix[] vec = new Matrix[2], mat = new Matrix[1];
+			
+		double[][] 
+			m0 = {
+				{ 1.0,  2.0},
+				{ 3.0,  4.0},
+				{ 5.0,  6.0}},
+
+			v0 = {
+				{-3.0},
+				{ 3.0}},
+
+			v1 = {
+				{ 2.0},
+				{-3.464}};
+                
+		vec[0] = new Matrix(v0);	vec[1] = new Matrix(v1);
+        mat[0] = new Matrix(m0);
+// 以下は、行列・ベクトル演算の実行＆結果表示の一例．不要であれば削除し，課題の条件を満たす記述を新たに追加すること
+		
+
+		System.out.println("m0 = " );
+		mat[0].display();
+		System.out.println();
+		System.out.println("m0の転置行列 = ");
+		mat[0].transpose().display();
+		System.out.println();
+
+		System.out.println("v0 = ");
+		vec[0].display();
+		System.out.println();
+		System.out.println("v0を45度回転  = ");
+		vec[0].rotate(45).display();
+		System.out.println();
+
+		System.out.println("v1 = ");
+		vec[1].display();
+		System.out.println();
+		System.out.println("v1を60度回転  = ");
+		vec[1].rotate(60).display();
+		System.out.println();
+
+
+
+
+
 
 
 	}
